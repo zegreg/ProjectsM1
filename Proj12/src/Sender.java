@@ -1,14 +1,35 @@
-/**
- * Um emissor pode registar
- * @author José Oliveira
- *
- */
-public interface Sender{
+
+public interface Sender {
 
 
-	public boolean registerUser(  User user) ;
+	/**
+	 * Abstract Method that allows a message should not be received by the user sending it
+	 * @param user
+	 */
+	public void sendMessage(IUser user);
+
+	/**
+	 * Abstract Method that allows a User registration
+	 * @param user
+	 */
+	public void registrationUser(IUser user);
+
+	/**
+	 * Abstract Method to print the User Information in a Sender
+	 * @param u User
+	 * @return String
+	 */
+	public String printMessage(User u);
+
 	
-	public boolean removeUser(  User user) ;
+	
+	/**
+	 * Abstract Method return an array of User registration
+	 * @return
+	 */
+	public User[] getUsersRegistationArray();
 
-	public void sendMessageToSender(Message message);
+
+
+
 }

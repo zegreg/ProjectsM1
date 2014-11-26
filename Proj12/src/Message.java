@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 
 /**
- * As mensagens são compostas pelo nome do utilizador que a criou e pelo seu texto
+ *Class whose insctance represent a Messages
+ *<p> Implementation Notes:
+ *<ul><li>Message are composed by user name and its text
+ *</ul>
  * @author José Oliveira
  *
  */
@@ -10,28 +13,27 @@ public class  Message  {
 
 	private User user;
 	private String value;
-	UserRegister register;
-	public Message() {
 
-	}
 
+	/**
+	 * Constructor
+	 * @param value String
+	 * @param user User
+	 */
 	public Message(String value, User user) {
 		this.value = value;
-		register = new UserRegister();
-
-		if (user.registerUser(user));
 		this.user = user;
+
 
 	}
 
+	/**
+	 * Method that get the text message
+	 * @return
+	 */
 	public String getValue() {
 		return value;
 	}
 
-	public User getUser() {
-		return user;
-	}
 
-
-	
 }

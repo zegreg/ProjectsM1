@@ -1,85 +1,85 @@
-import java.awt.List;
 import java.util.ArrayList;
 
 /**
- * Cada utilizador tem um nome. Um utilizador pode receber e enviar mensagens. è da responsabilidade do utilizador guardar
- * a ultima mensagem.
+ * 
+ * Class who instance represent  a user.
+ * 
+ * <p>Implementation Notes:
+ * <ul><li> Each user is identified by name;
+ * <li> A user can receive and send messages;
+ * <li> A user has the responsibility to save the last message;
+ * <li> It is possible receive more messages, after obtaining the last message received.
+ * </ul>
  * @author José Oliveira
  *
  */
-public class User implements Sender, Receiver{
+public class User implements IUser {
+
+
 
 	private String name;
-	private java.util.List<Message> messageList;
-	private UserRegister register;
-	
-	public User(String name, int num) {
-		this.name = name;
-		register = new  UserRegister(num);
-		messageList = new ArrayList<Message>();
+	private Message message;
+
+
+
+	/**
+	 * Private Constructor who receives a {@link Message} by parameter
+	 * @param lastmessage receive
+	 */
+	private User(Message message) {
+		this.message = message;
+
 	}
-	
+
+	/**
+	 * Constructor who receive the User name
+	 * @param name
+	 */
+	public User(String name) {
+		this.name = name;
+
+	}
+
+
+
+	@Override
 	public String getName() {
 		return name;
 	}
-	
-	public java.util.List<Message> getMessageList() {
-		return messageList;
+
+
+	@Override
+	public String sendMessageToSender(Message message) {
+
+		this.message = message;
+
+		return message.getValue();
+
+	}
+
+	@Override
+	public Message receiveMessageFromOtherUser(Message message) {
+
+		return this.message = message;
 	}
 
 
 	@Override
-	public void sendMessageToSender( Message messageToPublish) {
-	
-			 this.messageList.add(messageToPublish);
-		
-		
-		
+	public Message getMessage() {
+		return message;
+	}
+
+	/**
+	 * Method who call the printMessage() method.
+	 * @param sender
+	 * @return
+	 */
+	public String printMessage(Sender sender){
+
+		return sender.printMessage(this);
+
 	}
 
 
-	@Override
-	public void ReceiverMessage(Message message) {
-		 	this.messageList.add(message);
-		
-	}
-
-	@Override
-	public boolean registerUser(User user) {
-		
-		if (register.addRegister(user) == true) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean removeUser( User user) {
-		if (register.removeRegister(user) == true) {
-
-			return true;
-		}
-		return false;
-
-	}
-
-	public String print(User user){
-		String senderUser = null;
-		String value = null;
-		for (Message element : messageList) {
-			try {
-				if (!element.getUser().getName().equals(user)) {
-				senderUser = element.getUser().getName();
-				value = element.getValue();
-			}
-			} catch (Exception e) {
-				
-			return "Invalid user";
-			}
-		}
-
-		return "From : "+ senderUser +" \nMessage: "+ value;
-
-	}
 
 }

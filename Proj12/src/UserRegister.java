@@ -1,61 +1,108 @@
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
-import java.util.Set;
 
+/**
+ * Class whose instance represent a User register.
+ * <p> Implementation Notes:
+ * <ul><li> This Class implements {@link Sender};
+ * <li> Registration User in a Sender;
+ * <li> Ensure that a User message is sent to other user register in a Sender;
+ * 
+ * </ul>
+ * 
+ * 
+ * @author José Oliveira
+ *
+ */
+public class UserRegister implements Sender {
 
-public class UserRegister {
-
-	User[] usersRegistationArray;
-	int index = 0;
-	User temp;
-	int maxNum;
-	boolean isIndexNull = true;
+	/**
+	 * array of object User
+	 */
+	private User[] registerUser;
+	/**
+	 * This is the index that represent the initial length of array
+	 */
+	private int index = 1;
 	
-	public UserRegister(int num) {
-		this.maxNum = num;
-		usersRegistationArray = new User[num];
-	}
-	
+
+	/**
+	 * Constructor default
+	 * Declares the User array
+	 */
 	public UserRegister() {
-		// TODO Auto-generated constructor stub
+		registerUser = new User[this.index];
 	}
 
-	public User[] getUsers() {
-		return usersRegistationArray;
-	}
 	
-		
-	public boolean addRegister( User user) {
+	@Override
+	public void sendMessage(IUser user) {
+		this.registerUser = ArrayUtilsDecrease(registerUser);
+		for(User u : registerUser){
+			
+			if(!u.getName().equals(user.getName())){
+				u.receiveMessageFromOtherUser(((User) user).getMessage());
 
-		if (index == 0) {
-			usersRegistationArray[0] = user;
+
+
+			}
+		}
+
+	}
+	@Override
+	public String printMessage(User u){ 
+		for (User element : registerUser) {
+			if (!element.getName().equals(u.getName())) {
+				return(u.getName() + " Receive Message : " + element.getMessage().getValue() + " From :" + element.getName());
+			} else {
+				return (u.getName() + " Receive Message : " + element.getMessage().getValue() + " From :" + u.getName());
+			}
+		}
+
+		return null;
+	}
+	@Override
+	public void registrationUser(IUser user){
+
+		if (index == 1) {
+			this.registerUser = UserRegister.ArrayUtilsIncrease(registerUser);
+			registerUser[index - 1]= (User) user;
 			index++;
-            return true;
+
+
 		} else{		
-			if (existsUserInResister(user, usersRegistationArray) == false) {
-				usersRegistationArray[index] = user;
+			if (existsUserInRegister(user, registerUser) == false) {
+				this.registerUser = UserRegister.ArrayUtilsIncrease(registerUser);
+				registerUser[index-1] = (User) user;
 				index++;
-				return true;
+
 			} 
 		}
-		return false;
-	}
 
+	}
 	
+
+	public User[] getUsersRegistationArray() {
+		this.registerUser = ArrayUtilsDecrease(registerUser);
+		return registerUser;
+	}
+	
+
 	/**
-	 * Retorna se um dado valor existe dentro do array de valores do mesmo tipo.
-	 * Caso um dos parâmetros seja nulo, a execução do método será interrompida e <code>FALSE</code> retornado.
-	 * @param value Valor a ser pesquisado
-	 * @param values Array de valores
-	 * @return boolean Flag indicando se o valor foi encontrado ou não
+	 * Return true if a given value doesn't exists in a array otherwise return false
+	 * 
+	 * @param value Value to be searched
+	 * @param values Value Arrays
+	 * @return boolean Flag
 	 */
-	public static boolean existsUserInResister(User value, User[] values)  {
+	static boolean existsUserInRegister(IUser value, IUser[] values)  {
 		if (values == null){
 			return false;
 		}
 		if (value == null){
 			return false;
 		}
-		for (User element: values){
+		for (IUser element: values){
 			if ((element != null) && element.getName().equals(value.getName())) {
 				return true;
 			}
@@ -63,18 +110,40 @@ public class UserRegister {
 
 		return false;
 	}
+	
+	/**
+	 * static method to increase one value size to a given array receive by parameter
+	 * @param usersRegistationArray
+	 * @return array with a larger size
+	 */
+	static User[] ArrayUtilsIncrease(User[] usersRegistationArray){
 
+		User []newArray = new User [usersRegistationArray.length + 1];
 
-	public void list (){
-		
 		for (int i = 0; i < usersRegistationArray.length; i++) {
-			System.out.println(usersRegistationArray [i]);
+			newArray[i] = usersRegistationArray[i];
 		}
-		
+
+		return newArray;
 	}
 
-	public boolean removeRegister(User user) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	/**
+	 * static method to decrease one value size to a given array receive by parameter
+	 * @param usersRegistationArray
+	 * @return array with a smaller size
+	 */
+	static User[] ArrayUtilsDecrease(User[] usersRegistationArray){
+
+		User []newArray = new User [usersRegistationArray.length - 1];
+
+		for (int i = 0; i < newArray.length; i++) {
+			newArray[i] = usersRegistationArray[i];
+		}
+		return newArray;
 	}
+
+
+
+	
 }
